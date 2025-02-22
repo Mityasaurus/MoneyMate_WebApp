@@ -5,6 +5,10 @@ VisualStudioVersion = 17.13.35806.99 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyMate_WebApp", "MoneyMate_WebApp\MoneyMate_WebApp.csproj", "{B7EA71C8-A444-487F-8431-80AD1960CC24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyMate_WebApp.BusinessLogic", "MoneyMate_WebApp.BusinessLogic\MoneyMate_WebApp.BusinessLogic.csproj", "{FD9A6157-681B-41A5-8379-025786C87573}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyMate_WebApp.DataAccess", "MoneyMate_WebApp.DataAccess\MoneyMate_WebApp.DataAccess.csproj", "{98EFBF8F-5F6C-47C4-8154-F142DA18E473}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{B7EA71C8-A444-487F-8431-80AD1960CC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7EA71C8-A444-487F-8431-80AD1960CC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7EA71C8-A444-487F-8431-80AD1960CC24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD9A6157-681B-41A5-8379-025786C87573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD9A6157-681B-41A5-8379-025786C87573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD9A6157-681B-41A5-8379-025786C87573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD9A6157-681B-41A5-8379-025786C87573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EFBF8F-5F6C-47C4-8154-F142DA18E473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EFBF8F-5F6C-47C4-8154-F142DA18E473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EFBF8F-5F6C-47C4-8154-F142DA18E473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EFBF8F-5F6C-47C4-8154-F142DA18E473}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
