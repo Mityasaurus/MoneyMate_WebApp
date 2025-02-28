@@ -1,11 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using MoneyMate_WebApp.DataAccess;
+using MoneyMate_WebApp.DataAccess.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<MoneyMateContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDataContext(builder.Configuration)
+    .AddRepositories();
 
 builder.Services.AddControllersWithViews();
 
