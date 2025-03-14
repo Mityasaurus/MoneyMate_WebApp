@@ -1,6 +1,11 @@
+using MoneyMate_WebApp.DataAccess.Installers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDataContext(builder.Configuration)
+    .AddRepositories();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
