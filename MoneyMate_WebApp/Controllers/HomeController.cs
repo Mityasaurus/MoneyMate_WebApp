@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MoneyMate_WebApp.DataAccess.UoW;
 using MoneyMate_WebApp.Models;
 
 namespace MoneyMate_WebApp.Controllers;
