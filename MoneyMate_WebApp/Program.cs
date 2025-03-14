@@ -4,7 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDataContext(builder.Configuration)
-    .AddRepositories();
+    .AddRepositories()
+    .AddUnitOfWork();
 
 builder.Services.AddControllersWithViews();
 

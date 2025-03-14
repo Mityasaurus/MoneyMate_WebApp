@@ -28,14 +28,12 @@ namespace MoneyMate_WebApp.DataAccess.Repositories
         public async Task CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -44,7 +42,6 @@ namespace MoneyMate_WebApp.DataAccess.Repositories
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
             }
         }
     }
