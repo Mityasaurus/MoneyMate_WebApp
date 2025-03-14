@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MoneyMate_WebApp.Models.Account.AccountDisplayViewModel>
+@{
+    ViewData["Title"] = "Accounts";
+}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Accounts</h2>
+        <a asp-action="Create" class="btn btn-primary">Add New Account</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Account Type</th>
+                <th>Currency</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model)
+            {
+                <tr>
+                    <td>@account.Name</td>
+                    <td>@account.AccountTypeName</td>
+                    <td>@account.CurrencyName (@account.CurrencyCode)</td>
+                    <td>@account.Balance @account.CurrencySymbol</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

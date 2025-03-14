@@ -15,7 +15,7 @@ namespace MoneyMate_WebApp.DataAccess.Repositories
         }
 
 
-        public async Task<T?> GetAsync(int id)
+        public async Task<T?> GetAsync(Guid id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -36,7 +36,7 @@ namespace MoneyMate_WebApp.DataAccess.Repositories
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             var entity = await _dbSet.FindAsync(id);
             if (entity != null)

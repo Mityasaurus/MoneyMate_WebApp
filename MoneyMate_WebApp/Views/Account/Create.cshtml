@@ -1,0 +1,37 @@
+﻿@model MoneyMate_WebApp.Models.Account.CreateAccountViewModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+<div class="container mt-4">
+    <h2>Create Account</h2>
+    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="TypeId" class="form-label"></label>
+            <select asp-for="TypeId" class="form-select" asp-items="ViewBag.AccountTypes">
+                <option value="">Select account type</option>
+            </select>
+            <span asp-validation-for="TypeId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CurrencyId" class="form-label"></label>
+            <select asp-for="CurrencyId" class="form-select" asp-items="ViewBag.Currencies">
+                <option value="">Select currency</option>
+            </select>
+            <span asp-validation-for="CurrencyId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Balance" class="form-label"></label>
+            <input asp-for="Balance" class="form-control" />
+            <span asp-validation-for="Balance" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
