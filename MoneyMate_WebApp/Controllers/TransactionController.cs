@@ -8,16 +8,10 @@ using MoneyMate_WebApp.DataAccess.Entities;
 namespace MoneyMate_WebApp.Controllers
 {
     [Route("transaction")]
-    public class TransactionController : Controller
+    public class TransactionController(ITransactionService transactionService, ICategoryService categoryService) : Controller
     {
-        private readonly ITransactionService _transactionService;
-        private readonly ICategoryService _categoryService;
-
-        public TransactionController(ITransactionService transactionService, ICategoryService categoryService)
-        {
-            _transactionService = transactionService;
-            _categoryService = categoryService;
-        }
+        private readonly ITransactionService _transactionService = transactionService;
+        private readonly ICategoryService _categoryService = categoryService;
 
         private async Task PopulateCategoryViewBagsAsync()
         {
