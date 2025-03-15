@@ -177,7 +177,7 @@
                                     </div>
                                     <div class="account-card-footer">
                                         <div class="balance">@account.Balance @account.CurrencySymbol</div>
-                                        <a href='@Url.Action("CreateTransaction", "Transaction", new { accountId = account.Id })' class="btn btn-sm btn-success">Додати транзакцію</a>
+                                        <a href='@Url.Action("Create", "Transaction", new { accountId = account.Id })' class="btn btn-sm btn-success">Додати транзакцію</a>
                                     </div>
                                 </div>
                             </div>

@@ -7,6 +7,8 @@ namespace MoneyMate_WebApp.BusinessLogic.Services
 {
     public class AccountService(IUnitOfWork unitOfWork) : IAccountService
     {
+
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
         public async Task CreateAccountAsync(AccountDto accountDto)
         {
             ArgumentNullException.ThrowIfNull(accountDto);
@@ -19,24 +21,19 @@ namespace MoneyMate_WebApp.BusinessLogic.Services
                 Balance = accountDto.Balance,
                 CreatedAt = DateTime.Now
             };
-            await unitOfWork.Accounts.CreateAsync(account);
-            await unitOfWork.SaveAsync();
+            await _unitOfWork.Accounts.CreateAsync(account);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
         {
-            var accounts = await unitOfWork.Accounts.GetAllAsync();
+            var accounts = await _unitOfWork.Accounts.GetAllAsync();
 
             foreach (var account in accounts)
             {
-                if (account.Type == null)
-                {
-                    account.Type = await unitOfWork.Types.GetAsync(account.TypeId);
-                }
-                if (account.Currency == null)
-                {
-                    account.Currency = await unitOfWork.Currencies.GetAsync(account.CurrencyId);
-                }
+                account.Type ??= await _unitOfWork.Types.GetAsync(account.TypeId);
+
+                account.Currency ??= await _unitOfWork.Currencies.GetAsync(account.CurrencyId);
             }
 
             var dtos = accounts.Select(a => new AccountDto(
@@ -45,8 +42,9 @@ namespace MoneyMate_WebApp.BusinessLogic.Services
                 a.TypeId,
                 a.CurrencyId,
                 a.Balance,
-                new TypeDto(a.Type?.Name ?? string.Empty),
-                new CurrencyDto(a.Currency?.CurrencyName ?? string.Empty,
+                new TypeDto(a.Id, a.Type?.Name ?? string.Empty),
+                new CurrencyDto(a.Id,
+                                a.Currency?.CurrencyName ?? string.Empty,
                                 a.Currency?.CurrencyCode ?? string.Empty,
                                 a.Currency?.Symbol ?? string.Empty)
             ));

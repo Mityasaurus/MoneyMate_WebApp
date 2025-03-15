@@ -7,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataContext(builder.Configuration)
     .AddRepositories()
     .AddUnitOfWork()
-    .AddAccountService();
+    .AddAccountService()
+    .AddTransactionService()
+    .AddCategoryService()
+    .AddTypeService()
+    .AddCurrencyService();
 
 builder.Services.AddControllersWithViews();
 
@@ -26,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Index}");
 
 app.Run();
