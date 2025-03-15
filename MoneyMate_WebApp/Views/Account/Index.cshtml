@@ -1,31 +1,201 @@
 ﻿@model IEnumerable<MoneyMate_WebApp.Models.Account.AccountDisplayViewModel>
 @{
-    ViewData["Title"] = "Accounts";
+    ViewData["Title"] = "Рахунки";
+    var groups = Model
+        .Select((account, i) => new { account, i })
+        .GroupBy(x => x.i / 2)
+        .Select(g => g.Select(x => x.account).ToList())
+        .ToList();
 }
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Accounts</h2>
-        <a asp-action="Create" class="btn btn-primary">Add New Account</a>
-    </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Account Type</th>
-                <th>Currency</th>
-                <th>Balance</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var account in Model)
+
+@functions {
+    public string GetCurrencyBackground(string currencyCode)
+    {
+        switch (currencyCode)
+        {
+            case "EUR":
+                return "linear-gradient(135deg, #9FB0E8, #4F70E0)";
+            case "USD":
+                return "linear-gradient(135deg, #B3D1B3, #7AA97A)";
+            case "UAH":
+                return "linear-gradient(135deg, rgba(81,114,255,1) 0%, rgba(132,137,255,1) 40%, rgba(241,255,0,1) 100%);";
+            case "GBP":
+                return "linear-gradient(135deg, #F78F8F, #EE5C5C)";
+            case "JPY":
+                return "linear-gradient(135deg, #FF6969, #EFEFEF)";
+            case "CHF":
+                return "linear-gradient(135deg, #C8A2C8, #A974A9)";
+            default:
+                return "linear-gradient(135deg, #e0f7fa, #80deea)";
+        }
+    }
+}
+
+<style>
+    .page-header {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f8f9fa;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: #333;
+        }
+
+    .account-card {
+        border-radius: 15px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: #333;
+        width: 25vw;
+        min-width: 25vw;
+        height: 30vh;
+        position: relative;
+    }
+
+    .account-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+
+    .account-type-icon {
+        width: 50px;
+        height: 50px;
+        margin-left: 0.5rem;
+    }
+
+    .account-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: transparent;
+        margin-top: 0.5rem;
+    }
+
+    .balance {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .carousel-inner {
+        overflow: hidden;
+    }
+
+        .carousel-inner > .carousel-item > .row {
+            width: 100%;
+            justify-content: space-around;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+        }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+    }
+
+    .carousel-control-prev {
+        left: -50px;
+    }
+
+    .carousel-control-next {
+        right: -50px;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-size: 100%, 100%;
+        background-repeat: no-repeat;
+    }
+
+    .carousel-control-prev-icon {
+        background-image: url('@Url.Content("~/images/left-arrow.png")');
+    }
+
+    .carousel-control-next-icon {
+        background-image: url('@Url.Content("~/images/right-arrow.png")');
+    }
+
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+</style>
+
+<div class="page-header container">
+    <h1>Мої рахунки</h1>
+    <a asp-action="Create" class="btn btn-primary">Додати рахунок</a>
+</div>
+
+<div class="container">
+    <div id="accountCarousel" class="carousel slide" data-bs-interval="false">
+        <div class="carousel-inner">
+            @for (int g = 0; g < groups.Count; g++)
             {
-                <tr>
-                    <td>@account.Name</td>
-                    <td>@account.AccountTypeName</td>
-                    <td>@account.CurrencyName (@account.CurrencyCode)</td>
-                    <td>@account.Balance @account.CurrencySymbol</td>
-                </tr>
+                var group = groups[g];
+                var rowClass = group.Count == 1 ? "row justify-content-center" : "row justify-content-around";
+                <div class="carousel-item @(g == 0 ? "active" : "")">
+                    <div class="@rowClass">
+                        @foreach (var account in group)
+                        {
+                            <div class="col-12 col-sm-6 d-flex justify-content-center">
+                                <div class="account-card" style="background: @GetCurrencyBackground(account.CurrencyCode);">
+                                    <div class="account-card-header">
+                                        <span>@account.Name</span>
+                                        <span>
+                                            @if (account.AccountTypeName == "Банківський")
+                                            {
+                                                <img src="~/images/bank.png" alt="Bank Account" class="account-type-icon" />
+                                            }
+                                            else if (account.AccountTypeName == "Готівковий")
+                                            {
+                                                <img src="~/images/cash.png" alt="Cash Account" class="account-type-icon" />
+                                            }
+                                        </span>
+                                    </div>
+                                    <div class="account-card-footer">
+                                        <div class="balance">@account.Balance @account.CurrencySymbol</div>
+                                        <a href='@Url.Action("CreateTransaction", "Transaction", new { accountId = account.Id })' class="btn btn-sm btn-success">Додати транзакцію</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+        </div>
+        @if (groups.Count > 1)
+        {
+            <button class="carousel-control-prev" type="button" data-bs-target="#accountCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Попередній</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#accountCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Наступний</span>
+            </button>
+        }
+    </div>
 </div>
