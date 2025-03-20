@@ -1,10 +1,17 @@
 using MoneyMate_WebApp.DataAccess.Installers;
+using MoneyMate_WebApp.BusinessLogic.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDataContext(builder.Configuration)
-    .AddRepositories();
+    .AddRepositories()
+    .AddUnitOfWork()
+    .AddAccountService()
+    .AddTransactionService()
+    .AddCategoryService()
+    .AddTypeService()
+    .AddCurrencyService();
 
 builder.Services.AddControllersWithViews();
 
@@ -23,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Index}");
 
 app.Run();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoneyMate_WebApp.DataAccess;
 
@@ -11,9 +12,11 @@ using MoneyMate_WebApp.DataAccess;
 namespace MoneyMate_WebApp.DataAccess.Migrations
 {
     [DbContext(typeof(MoneyMateContext))]
-    partial class MoneyMateContextModelSnapshot : ModelSnapshot
+    [Migration("20250315173246_AllowNullCommentInTransaction")]
+    partial class AllowNullCommentInTransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

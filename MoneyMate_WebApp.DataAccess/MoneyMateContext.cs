@@ -113,7 +113,8 @@ namespace MoneyMate_WebApp.DataAccess
                       .HasColumnType("decimal(18,2)")
                       .IsRequired();
                 entity.Property(e => e.Comment)
-                      .HasMaxLength(255);
+                      .HasMaxLength(255)
+                      .IsRequired(false);
                 entity.Property(e => e.CreatedAt)
                       .HasDefaultValueSql("GETDATE()")
                       .IsRequired();
@@ -128,6 +129,7 @@ namespace MoneyMate_WebApp.DataAccess
                       .HasForeignKey(t => t.CategoryId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
+
         }
     }
 }
