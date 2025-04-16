@@ -13,11 +13,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MoneyMate_WebApp.DataAccess\MoneyMate_WebApp.DataAccess.csproj" />
     <ProjectReference Include="..\MoneyMate_WebApp.BusinessLogic\MoneyMate_WebApp.BusinessLogic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

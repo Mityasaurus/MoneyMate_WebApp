@@ -1,0 +1,173 @@
+﻿@model MoneyMate_WebApp.Models.Transaction.CreateTransactionViewModel
+@{
+    ViewData["Title"] = "Додати транзакцію";
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<style>
+    body {
+        background-color: #f5f5f5;
+    }
+
+    .card-transaction {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background-color: #fff;
+    }
+
+        .card-transaction .card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            font-size: 1.75rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .card-transaction .card-body {
+            padding: 2rem;
+        }
+
+    .toggle-btn-group {
+        display: inline-flex;
+        width: 100%;
+    }
+
+        .toggle-btn-group .btn {
+            flex: 1;
+            background-color: #e9ecef;
+            color: #333;
+            padding: 0.5rem 1rem;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+            margin: 0;
+            border: none;
+        }
+
+            .toggle-btn-group .btn:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+            .toggle-btn-group .btn:first-child {
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+                border-right: none;
+            }
+
+            .toggle-btn-group .btn:last-child {
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+            }
+
+    .toggle-btn-expense {
+        background-color: #f8d7da;
+        color: #dc3545;
+    }
+
+        .toggle-btn-expense.active {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+    .toggle-btn-income {
+        background-color: #d4edda;
+        color: #28a745;
+    }
+
+        .toggle-btn-income.active {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="card card-transaction mx-auto" style="max-width: 600px;">
+        <div class="card-header">Додати транзакцію</div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" asp-route-accountId="">
+                <input type="hidden" asp-for="AccountId" />
+                <div class="mb-3">
+                    <label class="form-label">Тип транзакції</label>
+                    <div class="toggle-btn-group" role="group">
+                        <button type="button" id="btnExpense" class="btn toggle-btn-expense active">Витрата</button>
+                        <button type="button" id="btnIncome" class="btn toggle-btn-income">Дохід</button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CategoryId" class="form-label">Категорія</label>
+                    <select asp-for="CategoryId" class="form-select" id="categorySelect">
+                        @if (ViewBag.ExpenseCategories != null)
+                        {
+                            foreach (var item in (IEnumerable<SelectListItem>)ViewBag.ExpenseCategories)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Date" class="form-label">Дата</label>
+                    <input asp-for="Date" class="form-control" type="date" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Amount" class="form-label">Сума</label>
+                    <input asp-for="Amount" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Comment" class="form-label">Коментар (не обов'язковий)</label>
+                    <textarea asp-for="Comment" class="form-control" placeholder="Введіть коментар, якщо потрібно"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Зберегти транзакцію</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var incomeCategories = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.IncomeCategories));
+            var expenseCategories = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ExpenseCategories));
+
+            function updateCategoryDropdown(type) {
+                var select = $('#categorySelect');
+                select.empty();
+                var categories = (type === 'Income') ? incomeCategories : expenseCategories;
+                $.each(categories, function (index, item) {
+                    select.append($('<option></option>').attr('value', item.Value).text(item.Text));
+                });
+            }
+
+            $('#btnExpense').click(function () {
+                $('#TransactionType').val('Expense');
+                $(this).addClass('active');
+                $('#btnIncome').removeClass('active');
+                updateCategoryDropdown('Expense');
+            });
+
+            $('#btnIncome').click(function () {
+                $('#TransactionType').val('Income');
+                $(this).addClass('active');
+                $('#btnExpense').removeClass('active');
+                updateCategoryDropdown('Income');
+            });
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
