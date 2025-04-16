@@ -12,8 +12,8 @@ using MoneyMate_WebApp.DataAccess;
 namespace MoneyMate_WebApp.DataAccess.Migrations
 {
     [DbContext(typeof(MoneyMateContext))]
-    [Migration("20250315173246_AllowNullCommentInTransaction")]
-    partial class AllowNullCommentInTransaction
+    [Migration("20250416190835_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,11 +67,6 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -80,6 +75,33 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories", (string)null);
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.CategoryTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("CategoryTranslations", (string)null);
                 });
 
             modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Currency", b =>
@@ -94,11 +116,6 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("CurrencyName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Symbol")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -110,6 +127,33 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Currencies", (string)null);
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.CurrencyTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<Guid>("CurrencyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CurrencyName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("CurrencyTranslations", (string)null);
                 });
 
             modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Transaction", b =>
@@ -156,14 +200,36 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.HasKey("Id");
+
+                    b.ToTable("Types", (string)null);
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.TypeTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Types", (string)null);
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("TypeTranslations", (string)null);
                 });
 
             modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Account", b =>
@@ -185,6 +251,28 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.CategoryTranslation", b =>
+                {
+                    b.HasOne("MoneyMate_WebApp.DataAccess.Entities.Category", "Category")
+                        .WithMany("Translations")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.CurrencyTranslation", b =>
+                {
+                    b.HasOne("MoneyMate_WebApp.DataAccess.Entities.Currency", "Currency")
+                        .WithMany("Translations")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Currency");
+                });
+
             modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Transaction", b =>
                 {
                     b.HasOne("MoneyMate_WebApp.DataAccess.Entities.Account", "Account")
@@ -204,9 +292,35 @@ namespace MoneyMate_WebApp.DataAccess.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.TypeTranslation", b =>
+                {
+                    b.HasOne("MoneyMate_WebApp.DataAccess.Entities.TypeEntity", "TypeEntity")
+                        .WithMany("Translations")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TypeEntity");
+                });
+
             modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Account", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Category", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.Currency", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("MoneyMate_WebApp.DataAccess.Entities.TypeEntity", b =>
+                {
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

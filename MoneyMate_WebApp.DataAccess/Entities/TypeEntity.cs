@@ -3,6 +3,6 @@
     public class TypeEntity
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public ICollection<TypeTranslation> Translations { get; set; } = [];
     }
 }
