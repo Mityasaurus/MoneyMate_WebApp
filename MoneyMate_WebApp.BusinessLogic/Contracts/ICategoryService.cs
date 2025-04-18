@@ -4,6 +4,6 @@ namespace MoneyMate_WebApp.BusinessLogic.Contracts
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
+        Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync(string languageCode = "en");
     }
 }

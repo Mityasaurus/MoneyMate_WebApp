@@ -9,7 +9,10 @@ namespace MoneyMate_WebApp.DataAccess.UoW
         IRepository<Transaction> transactionRepository,
         IRepository<Category> categoryRepository,
         IRepository<TypeEntity> typeRepository,
-        IRepository<Currency> currencyRepository) : IUnitOfWork
+        IRepository<Currency> currencyRepository,
+        IRepository<CategoryTranslation> categoryTranslationRepository,
+        IRepository<TypeTranslation> typeTranslationRepository,
+        IRepository<CurrencyTranslation> currencyTranslationRepository) : IUnitOfWork
     {
         private readonly MoneyMateContext _context = context;
 
@@ -18,6 +21,10 @@ namespace MoneyMate_WebApp.DataAccess.UoW
         public IRepository<Category> Categories { get; } = categoryRepository;
         public IRepository<TypeEntity> Types { get; } = typeRepository;
         public IRepository<Currency> Currencies { get; } = currencyRepository;
+
+        public IRepository<CategoryTranslation> CategoryTranslations { get; } = categoryTranslationRepository;
+        public IRepository<TypeTranslation> TypeTranslations { get; } = typeTranslationRepository;
+        public IRepository<CurrencyTranslation> CurrencyTranslations { get; } = currencyTranslationRepository;
 
         public async Task<int> SaveAsync()
         {

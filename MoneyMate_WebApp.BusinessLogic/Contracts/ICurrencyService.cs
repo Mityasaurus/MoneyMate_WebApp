@@ -4,6 +4,6 @@ namespace MoneyMate_WebApp.BusinessLogic.Contracts
 {
     public interface ICurrencyService
     {
-        Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync();
+        Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync(string languageCode = "en");
     }
 }

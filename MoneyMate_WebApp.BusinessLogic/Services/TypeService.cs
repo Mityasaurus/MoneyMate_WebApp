@@ -8,10 +8,25 @@ namespace MoneyMate_WebApp.BusinessLogic.Services
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<IEnumerable<TypeDto>> GetAllTypesAsync()
+        public async Task<IEnumerable<TypeDto>> GetAllTypesAsync(string languageCode = "en")
         {
+            // Отримуємо всі типи
             var types = await _unitOfWork.Types.GetAllAsync();
-            return types.Select(t => new TypeDto(t.Id, t.Name));
+
+            // Отримуємо всі переклади типів для заданої мови
+            var typeTranslations = await _unitOfWork.TypeTranslations.GetAllAsync();
+
+            return types.Select(t =>
+            {
+                // Знаходимо переклад для типу
+                var typeTranslation = typeTranslations
+                    .FirstOrDefault(tt => tt.TypeId == t.Id && tt.LanguageCode == languageCode);
+
+                return new TypeDto(
+                    t.Id,
+                    typeTranslation?.Name ?? "[Translation Missing]"  // Якщо переклад відсутній, використовуємо значення за замовчуванням
+                );
+            });
         }
     }
 }

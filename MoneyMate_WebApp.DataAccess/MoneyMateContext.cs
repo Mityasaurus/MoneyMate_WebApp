@@ -5,15 +5,12 @@ namespace MoneyMate_WebApp.DataAccess
 {
     public class MoneyMateContext : DbContext
     {
-        public MoneyMateContext()
-        {
-        }
+        public MoneyMateContext() { }
 
         public MoneyMateContext(DbContextOptions<MoneyMateContext> options)
-        : base(options)
+            : base(options)
         {
         }
-
 
         public DbSet<TypeEntity> Types { get; set; }
         public DbSet<Currency> Currencies { get; set; }
@@ -21,10 +18,9 @@ namespace MoneyMate_WebApp.DataAccess
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=ADMIN-PC\\SQLEXPRESS;Database=MoneyMateDb;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
+        public DbSet<TypeTranslation> TypeTranslations { get; set; }
+        public DbSet<CurrencyTranslation> CurrencyTranslations { get; set; }
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,9 +30,6 @@ namespace MoneyMate_WebApp.DataAccess
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id)
                       .HasDefaultValueSql("NEWID()");
-                entity.Property(e => e.Name)
-                      .HasMaxLength(50)
-                      .IsRequired();
             });
 
             modelBuilder.Entity<Currency>(entity =>
@@ -46,12 +39,11 @@ namespace MoneyMate_WebApp.DataAccess
                 entity.Property(e => e.Id)
                       .HasDefaultValueSql("NEWID()");
                 entity.Property(e => e.CurrencyCode)
+                      .HasColumnType("nvarchar(10)")
                       .HasMaxLength(10)
                       .IsRequired();
-                entity.Property(e => e.CurrencyName)
-                      .HasMaxLength(50)
-                      .IsRequired();
                 entity.Property(e => e.Symbol)
+                      .HasColumnType("nvarchar(10)")
                       .HasMaxLength(10)
                       .IsRequired();
                 entity.HasIndex(e => e.CurrencyCode)
@@ -64,11 +56,8 @@ namespace MoneyMate_WebApp.DataAccess
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id)
                       .HasDefaultValueSql("NEWID()");
-                entity.Property(e => e.Name)
-                      .HasMaxLength(50)
-                      .IsRequired();
-
                 entity.Property(e => e.Type)
+                      .HasColumnType("nvarchar(20)")
                       .HasConversion<string>()
                       .HasMaxLength(20)
                       .IsRequired();
@@ -81,6 +70,7 @@ namespace MoneyMate_WebApp.DataAccess
                 entity.Property(e => e.Id)
                       .HasDefaultValueSql("NEWID()");
                 entity.Property(e => e.Name)
+                      .HasColumnType("nvarchar(100)")
                       .HasMaxLength(100)
                       .IsRequired();
                 entity.Property(e => e.Balance)
@@ -113,6 +103,7 @@ namespace MoneyMate_WebApp.DataAccess
                       .HasColumnType("decimal(18,2)")
                       .IsRequired();
                 entity.Property(e => e.Comment)
+                      .HasColumnType("nvarchar(255)")
                       .HasMaxLength(255)
                       .IsRequired(false);
                 entity.Property(e => e.CreatedAt)
@@ -130,6 +121,65 @@ namespace MoneyMate_WebApp.DataAccess
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<TypeTranslation>(entity =>
+            {
+                entity.ToTable("TypeTranslations");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                      .HasDefaultValueSql("NEWID()");
+                entity.Property(e => e.LanguageCode)
+                      .HasColumnType("nvarchar(5)")
+                      .HasMaxLength(5)
+                      .IsRequired();
+                entity.Property(e => e.Name)
+                      .HasColumnType("nvarchar(50)")
+                      .HasMaxLength(50)
+                      .IsRequired();
+                entity.HasOne(e => e.TypeEntity)
+                      .WithMany(t => t.Translations)
+                      .HasForeignKey(e => e.TypeId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<CurrencyTranslation>(entity =>
+            {
+                entity.ToTable("CurrencyTranslations");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                      .HasDefaultValueSql("NEWID()");
+                entity.Property(e => e.LanguageCode)
+                      .HasColumnType("nvarchar(5)")
+                      .HasMaxLength(5)
+                      .IsRequired();
+                entity.Property(e => e.CurrencyName)
+                      .HasColumnType("nvarchar(50)")
+                      .HasMaxLength(50)
+                      .IsRequired();
+                entity.HasOne(e => e.Currency)
+                      .WithMany(c => c.Translations)
+                      .HasForeignKey(e => e.CurrencyId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<CategoryTranslation>(entity =>
+            {
+                entity.ToTable("CategoryTranslations");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id)
+                      .HasDefaultValueSql("NEWID()");
+                entity.Property(e => e.LanguageCode)
+                      .HasColumnType("nvarchar(5)")
+                      .HasMaxLength(5)
+                      .IsRequired();
+                entity.Property(e => e.Name)
+                      .HasColumnType("nvarchar(50)")
+                      .HasMaxLength(50)
+                      .IsRequired();
+                entity.HasOne(e => e.Category)
+                      .WithMany(c => c.Translations)
+                      .HasForeignKey(e => e.CategoryId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

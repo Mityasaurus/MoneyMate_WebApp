@@ -1,6 +1,6 @@
 ﻿@model MoneyMate_WebApp.Models.Transaction.CreateTransactionViewModel
 @{
-    ViewData["Title"] = "Додати транзакцію";
+    ViewData["Title"] = Localizer["Add transaction"];
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 <style>
@@ -93,19 +93,19 @@
 
 <div class="container my-5">
     <div class="card card-transaction mx-auto" style="max-width: 600px;">
-        <div class="card-header">Додати транзакцію</div>
+        <div class="card-header">@Localizer["Add transaction"]</div>
         <div class="card-body">
             <form asp-action="Create" method="post" asp-route-accountId="">
                 <input type="hidden" asp-for="AccountId" />
                 <div class="mb-3">
-                    <label class="form-label">Тип транзакції</label>
+                    <label class="form-label">@Localizer["Type"]</label>
                     <div class="toggle-btn-group" role="group">
-                        <button type="button" id="btnExpense" class="btn toggle-btn-expense active">Витрата</button>
-                        <button type="button" id="btnIncome" class="btn toggle-btn-income">Дохід</button>
+                        <button type="button" id="btnExpense" class="btn toggle-btn-expense active">@Localizer["Expense"]</button>
+                        <button type="button" id="btnIncome" class="btn toggle-btn-income">@Localizer["Income"]</button>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CategoryId" class="form-label">Категорія</label>
+                    <label asp-for="CategoryId" class="form-label">@Localizer["Category"]</label>
                     <select asp-for="CategoryId" class="form-select" id="categorySelect">
                         @if (ViewBag.ExpenseCategories != null)
                         {
@@ -118,21 +118,21 @@
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Date" class="form-label">Дата</label>
+                    <label asp-for="Date" class="form-label">@Localizer["Date"]</label>
                     <input asp-for="Date" class="form-control" type="date" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Amount" class="form-label">Сума</label>
+                    <label asp-for="Amount" class="form-label">@Localizer["Amount"]</label>
                     <input asp-for="Amount" class="form-control" type="number" step="0.01" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Comment" class="form-label">Коментар (не обов'язковий)</label>
-                    <textarea asp-for="Comment" class="form-control" placeholder="Введіть коментар, якщо потрібно"></textarea>
+                    <label asp-for="Comment" class="form-label">@Localizer["Comment"]</label>
+                    <textarea asp-for="Comment" class="form-control" placeholder=@Localizer["Enter comment"]></textarea>
                     <span asp-validation-for="Comment" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Зберегти транзакцію</button>
+                <button type="submit" class="btn btn-primary w-100">@Localizer["Save"]</button>
             </form>
         </div>
     </div>

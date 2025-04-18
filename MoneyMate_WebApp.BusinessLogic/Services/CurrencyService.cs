@@ -8,10 +8,24 @@ namespace MoneyMate_WebApp.BusinessLogic.Services
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync()
+        public async Task<IEnumerable<CurrencyDto>> GetAllCurrenciesAsync(string languageCode = "en")
         {
             var currencies = await _unitOfWork.Currencies.GetAllAsync();
-            return currencies.Select(c => new CurrencyDto(c.Id, c.CurrencyName, c.CurrencyCode, c.Symbol));
+
+            var currencyTranslations = await _unitOfWork.CurrencyTranslations.GetAllAsync();
+
+            return currencies.Select(c =>
+            {
+                var currencyTranslation = currencyTranslations
+                    .FirstOrDefault(t => t.CurrencyId == c.Id && t.LanguageCode == languageCode);
+
+                return new CurrencyDto(
+                    c.Id,
+                    currencyTranslation?.CurrencyName ?? "[Translation Missing]", 
+                    c.CurrencyCode,
+                    c.Symbol
+                );
+            });
         }
     }
 }

@@ -44,5 +44,6 @@ namespace MoneyMate_WebApp.DataAccess.Repositories
                 _dbSet.Remove(entity);
             }
         }
+
     }
 }

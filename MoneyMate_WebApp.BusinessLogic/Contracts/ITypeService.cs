@@ -4,6 +4,6 @@ namespace MoneyMate_WebApp.BusinessLogic.Contracts
 {
     public interface ITypeService
     {
-        Task<IEnumerable<TypeDto>> GetAllTypesAsync();
+        Task<IEnumerable<TypeDto>> GetAllTypesAsync(string languageCode = "en");
     }
 }
