@@ -1,9 +1,12 @@
 using MoneyMate_WebApp.DataAccess.Installers;
 using MoneyMate_WebApp.BusinessLogic.Installers;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLocalization(O => O.ResourcesPath = "Resources");
+
 builder.Services.AddDataContext(builder.Configuration)
     .AddRepositories()
     .AddUnitOfWork()
@@ -12,10 +15,20 @@ builder.Services.AddDataContext(builder.Configuration)
     .AddCategoryService()
     .AddTypeService()
     .AddCurrencyService();
+    
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
 
 var app = builder.Build();
+
+var supportedCultures = new[] { "en", "uk" };
+var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

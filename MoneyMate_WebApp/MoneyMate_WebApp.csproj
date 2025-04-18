@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\ValidationMessages\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
