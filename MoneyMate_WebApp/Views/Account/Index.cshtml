@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<MoneyMate_WebApp.Models.Account.AccountDisplayViewModel>
 @{
-    ViewData["Title"] = "Рахунки";
+    ViewData["Title"] = Localizer["Accounts"];
     var groups = Model
         .Select((account, i) => new { account, i })
         .GroupBy(x => x.i / 2)
@@ -145,8 +145,8 @@
 </style>
 
 <div class="page-header container">
-    <h1>Мої рахунки</h1>
-    <a asp-action="Create" class="btn btn-primary">Додати рахунок</a>
+    <h1>@Localizer["Accounts"]</h1>
+    <a asp-action="Create" class="btn btn-primary">@Localizer["Create Account"]</a>
 </div>
 
 <div class="container">
@@ -165,11 +165,11 @@
                                     <div class="account-card-header">
                                         <span>@account.Name</span>
                                         <span>
-                                            @if (account.AccountTypeName == "Банківський")
+                                            @if (account.AccountTypeName == "Bank")
                                             {
                                                 <img src="~/images/bank.png" alt="Bank Account" class="account-type-icon" />
                                             }
-                                            else if (account.AccountTypeName == "Готівковий")
+                                            else if (account.AccountTypeName == "Cash")
                                             {
                                                 <img src="~/images/cash.png" alt="Cash Account" class="account-type-icon" />
                                             }
@@ -177,7 +177,7 @@
                                     </div>
                                     <div class="account-card-footer">
                                         <div class="balance">@account.Balance @account.CurrencySymbol</div>
-                                        <a href='@Url.Action("Create", "Transaction", new { accountId = account.Id })' class="btn btn-sm btn-success">Додати транзакцію</a>
+                                        <a href='@Url.Action("Create", "Transaction", new { accountId = account.Id })' class="btn btn-sm btn-success">@Localizer["Add Transaction"]</a>
                                     </div>
                                 </div>
                             </div>

@@ -1,5 +1,9 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Localization
+@using System.Globalization
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentCulture.TwoLetterISOLanguageName">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,23 +14,57 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Account" asp-action="Index">MoneyMate</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-controller="Account" asp-action="Index">MoneyMate</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Рахунки</a>
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">
+                                @Localizer["Accounts"]
+                            </a>
                         </li>
                     </ul>
+
+                    @* Language switcher *@
+                    <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-flex align-items-center">
+                        <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
+                        @{
+                            var cur = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+                            var langs = new List<(string Code, string Label)> {
+                                ("en", "English"),
+                                ("uk", "Українська")
+                            };
+                        }
+                        <select name="culture"
+                                class="form-select form-select-sm"
+                                onchange="this.form.submit()"
+                                style="width: auto;">
+                            @foreach (var lang in langs)
+                            {
+                                if (lang.Code == cur)
+                                {
+                                    <option value="@lang.Code" selected="selected">
+                                        @lang.Label
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@lang.Code">
+                                        @lang.Label
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </form>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

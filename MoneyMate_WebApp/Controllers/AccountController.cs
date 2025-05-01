@@ -37,14 +37,16 @@ namespace MoneyMate_WebApp.Controllers
 
         private async Task PopulateAccountViewBagsAsync()
         {
-            var types = await _typeService.GetAllTypesAsync();
+            string languageCode = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+
+            var types = await _typeService.GetAllTypesAsync(languageCode);
             ViewBag.AccountTypes = types.Select(t => new SelectListItem
             {
                 Value = t.Id.ToString(),
                 Text = t.Name
             }).ToList();
 
-            var currencies = await _currencyService.GetAllCurrenciesAsync();
+            var currencies = await _currencyService.GetAllCurrenciesAsync(languageCode);
             ViewBag.Currencies = currencies.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),

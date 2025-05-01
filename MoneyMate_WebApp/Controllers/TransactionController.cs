@@ -15,7 +15,8 @@ namespace MoneyMate_WebApp.Controllers
 
         private async Task PopulateCategoryViewBagsAsync()
         {
-            var allCategories = await _categoryService.GetAllCategoriesAsync();
+            string languageCode = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+            var allCategories = await _categoryService.GetAllCategoriesAsync(languageCode);
             var expenseCategories = allCategories
                 .Where(c => c.Type == TransactionType.Expense)
                 .OrderBy(c => c.Name)
@@ -61,8 +62,18 @@ namespace MoneyMate_WebApp.Controllers
                 model.Comment
             );
 
-            await _transactionService.CreateTransactionAsync(transactionDto);
-            return RedirectToAction("Index", "Account");
+            try
+            {
+
+                await _transactionService.CreateTransactionAsync(transactionDto);
+                return RedirectToAction("Index", "Account");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                await PopulateCategoryViewBagsAsync();
+                return View(model);
+            }
         }
     }
 }

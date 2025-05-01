@@ -41,30 +41,30 @@
 
 <div class="container my-5">
     <div class="card card-account mx-auto" style="max-width: 600px;">
-        <div class="card-header">Новий Рахунок</div>
+        <div class="card-header">@Localizer["New Account"]</div>
         <div class="card-body">
             <form asp-action="Create" method="post" class="needs-validation" novalidate>
                 <div class="mb-3">
-                    <label asp-for="Name" class="form-label">Назва рахунку</label>
-                    <input asp-for="Name" class="form-control" placeholder="Введіть назву рахунку" />
+                    <label asp-for="Name" class="form-label">@Localizer["Name"]</label>
+                    <input asp-for="Name" class="form-control" placeholder=@Localizer["Enter name"] />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="TypeId" class="form-label">Тип рахунку</label>
+                    <label asp-for="TypeId" class="form-label">@Localizer["Type"]</label>
                     <select asp-for="TypeId" class="form-select" asp-items="ViewBag.AccountTypes">
-                        <option value="">Оберіть тип рахунку</option>
+                        <option value="">@Localizer["Select type"]</option>
                     </select>
                     <span asp-validation-for="TypeId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="CurrencyId" class="form-label">Валюта рахунку</label>
+                    <label asp-for="CurrencyId" class="form-label">@Localizer["Currency"]</label>
                     <select asp-for="CurrencyId" class="form-select" asp-items="ViewBag.Currencies">
-                        <option value="">Оберіть валюту рахунку</option>
+                        <option value="">@Localizer["Select currency"]</option>
                     </select>
                     <span asp-validation-for="CurrencyId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Balance" class="form-label">Початковий баланс</label>
+                    <label asp-for="Balance" class="form-label">@Localizer["Balance"]</label>
                     <input asp-for="Balance" class="form-control" placeholder="Введіть початковий баланс" value="0" />
                     <span asp-validation-for="Balance" class="text-danger"></span>
                 </div>

@@ -11,6 +11,10 @@ namespace MoneyMate_WebApp.DataAccess.UoW
         IRepository<TypeEntity> Types { get; }
         IRepository<Currency> Currencies { get; }
 
+        IRepository<CategoryTranslation> CategoryTranslations { get; }
+        IRepository<TypeTranslation> TypeTranslations { get; }
+        IRepository<CurrencyTranslation> CurrencyTranslations { get; }
+
         Task<int> SaveAsync();
     }
 }
