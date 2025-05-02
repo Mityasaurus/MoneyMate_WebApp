@@ -1,0 +1,15 @@
+﻿@model MoneyMate_WebApp.DataAccess.Entities.ApplicationUser
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div class="container mt-4">
+    <h2>@Localizer["Confirm Delete User"]</h2>
+    <div class="alert alert-warning">
+        @Localizer["Are you sure you want to delete user"] <strong>@Model.Email</strong>?
+    </div>
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
+        <a asp-action="Index" class="btn btn-secondary ms-2">@Localizer["Cancel"]</a>
+    </form>
+</div>

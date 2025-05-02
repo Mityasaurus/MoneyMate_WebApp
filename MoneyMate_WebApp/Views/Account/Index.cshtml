@@ -142,6 +142,17 @@
         white-space: nowrap;
         border: 0;
     }
+
+    a.text-decoration-none {
+        color: inherit;
+        text-decoration: none;
+    }
+
+        a.text-decoration-none:hover,
+        a.text-decoration-none:focus {
+            color: inherit;
+            text-decoration: none;
+        }
 </style>
 
 <div class="page-header container">
@@ -160,8 +171,12 @@
                     <div class="@rowClass">
                         @foreach (var account in group)
                         {
-                            <div class="col-12 col-sm-6 d-flex justify-content-center">
-                                <div class="account-card" style="background: @GetCurrencyBackground(account.CurrencyCode);">
+                            <a asp-controller="Transaction"
+                               asp-action="Index"
+                               asp-route-accountId="@account.Id"
+                               class="col-12 col-sm-6 d-flex justify-content-center text-decoration-none"
+                               style="display: block;">
+                                <div class="account-card" style="background: @GetCurrencyBackground(account.CurrencyCode); cursor: pointer;">
                                     <div class="account-card-header">
                                         <span>@account.Name</span>
                                         <span>
@@ -177,10 +192,10 @@
                                     </div>
                                     <div class="account-card-footer">
                                         <div class="balance">@account.Balance @account.CurrencySymbol</div>
-                                        <a href='@Url.Action("Create", "Transaction", new { accountId = account.Id })' class="btn btn-sm btn-success">@Localizer["Add Transaction"]</a>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
+
                         }
                     </div>
                 </div>

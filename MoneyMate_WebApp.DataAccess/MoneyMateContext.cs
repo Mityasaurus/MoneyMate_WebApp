@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MoneyMate_WebApp.DataAccess.Entities;
 
 namespace MoneyMate_WebApp.DataAccess
 {
-    public class MoneyMateContext : DbContext
+    public class MoneyMateContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public MoneyMateContext() { }
 
@@ -24,6 +26,8 @@ namespace MoneyMate_WebApp.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<TypeEntity>(entity =>
             {
                 entity.ToTable("Types");

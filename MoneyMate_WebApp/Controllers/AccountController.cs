@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MoneyMate_WebApp.BusinessLogic.Dtos;
 using MoneyMate_WebApp.Models.Account;
 using MoneyMate_WebApp.BusinessLogic.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MoneyMate_WebApp.Controllers
 {
+    [Authorize]
     [Route("account")]
     public class AccountController(ILogger<AccountController> logger,
                              IAccountService accountService,

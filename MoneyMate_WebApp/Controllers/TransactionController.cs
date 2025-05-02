@@ -4,9 +4,11 @@ using MoneyMate_WebApp.BusinessLogic.Dtos;
 using MoneyMate_WebApp.Models.Transaction;
 using MoneyMate_WebApp.BusinessLogic.Contracts;
 using MoneyMate_WebApp.DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MoneyMate_WebApp.Controllers
 {
+    [Authorize]
     [Route("transaction")]
     public class TransactionController(ITransactionService transactionService, ICategoryService categoryService) : Controller
     {
@@ -74,6 +76,23 @@ namespace MoneyMate_WebApp.Controllers
                 await PopulateCategoryViewBagsAsync();
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index(Guid accountId)
+        {
+            var transactions = await _transactionService.GetByAccountAsync(accountId);
+            var vm = transactions.Select(t => new TransactionDisplayViewModel
+            {
+                Date = t.Date,
+                Amount = t.Amount,
+                Comment = t.Comment,
+                CategoryName = t.Category.Name,
+                Type = t.Category.Type
+            }).ToList();
+
+            ViewBag.AccountId = accountId;
+            return View(vm);
         }
     }
 }

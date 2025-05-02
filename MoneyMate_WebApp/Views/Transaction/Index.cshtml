@@ -1,0 +1,61 @@
+﻿@model IEnumerable<MoneyMate_WebApp.Models.Transaction.TransactionDisplayViewModel>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Transactions"];
+    var accountId = (Guid)ViewBag.AccountId;
+}
+
+<style>
+    .badge-lg {
+        font-size: 1rem;
+        padding: 0.4em 0.5em;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>@Localizer["Transactions"]</h2>
+        <a asp-action="Create" asp-controller="Transaction" asp-route-accountId="@accountId" class="btn btn-primary">
+            @Localizer["Add Transaction"]
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>@Localizer["Date"]</th>
+                    <th>@Localizer["Category"]</th>
+                    <th>@Localizer["Type"]</th>
+                    <th class="text-end">@Localizer["Amount"]</th>
+                    <th>@Localizer["Comment"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tx in Model)
+                {
+                    var isExpense = tx.Type == MoneyMate_WebApp.DataAccess.Entities.TransactionType.Expense;
+                    <tr>
+                        <td>@tx.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@tx.CategoryName</td>
+                        <td>
+                            @if (isExpense)
+                            {
+                                <span class="badge badge-lg bg-danger">@Localizer["Expense"]</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-lg bg-success">@Localizer["Income"]</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            @(isExpense ? "-" : "")@tx.Amount.ToString("F2")
+                        </td>
+                        <td>@tx.Comment</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

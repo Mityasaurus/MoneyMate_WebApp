@@ -117,10 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accounts" xml:space="preserve">
-    <value>Рахунки</value>
+  <data name="Add Transaction" xml:space="preserve">
+    <value>Додати Транзакцію</value>
   </data>
-  <data name="User Management" xml:space="preserve">
-    <value>Управління користувачами</value>
+  <data name="Amount" xml:space="preserve">
+    <value>Сума</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категорія</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Коментар</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Expense" xml:space="preserve">
+    <value>Витрата</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Дохід</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Транзакції</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
   </data>
 </root>
