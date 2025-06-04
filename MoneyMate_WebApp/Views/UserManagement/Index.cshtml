@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MoneyMate_WebApp.DataAccess.Entities.ApplicationUser>
+
+@{
+    ViewData["Title"] = Localizer["User Management"];
+}
+
+<div class="container mt-4">
+    <h2>@Localizer["User Management"]</h2>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>@Localizer["Email"]</th>
+                <th>@Localizer["Username"]</th>
+                <th>@Localizer["Actions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>@user.UserName</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-secondary me-1">
+                            @Localizer["Edit"]
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger">
+                            @Localizer["Delete"]
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

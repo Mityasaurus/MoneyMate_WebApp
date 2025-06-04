@@ -16,20 +16,68 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Account" asp-action="Index">MoneyMate</a>
+                <a class="navbar-brand" asp-controller="UserAccount" asp-action="Login">MoneyMate</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">
-                                @Localizer["Accounts"]
-                            </a>
-                        </li>
+                        @if (!User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="UserAccount" asp-action="Login">
+                                    @Localizer["Login"]
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="UserAccount" asp-action="Register">
+                                    @Localizer["Register"]
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">
+                                    @Localizer["Accounts"]
+                                </a>
+                            </li>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="UserManagement" asp-action="Index">
+                                        @Localizer["User Management"]
+                                    </a>
+                                </li>
+                            }
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="UserAccount" asp-action="EditProfile">
+                                        @Localizer["Edit Profile"]
+                                    </a>
+                                </li>
+                            }
+
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="UserAccount" asp-action="ChangePassword">
+                                    @Localizer["Change Password"]
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <form asp-controller="UserAccount" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">
+                                        @Localizer["Logout"]
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
 
-                    @* Language switcher *@
                     <form asp-controller="Language" asp-action="SetLanguage" method="post" class="d-flex align-items-center">
                         <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
                         @{
